@@ -1,0 +1,26 @@
+[
+    {
+        "name": "John Doe",
+        "role": "Fighter",
+        "level": 1,
+        "gold": 100,
+        "hp": 100,
+        "inventory": []
+    },
+    {
+        "name": "Slayer",
+        "role": "Fighter",
+        "level": 1,
+        "gold": 100,
+        "hp": 100,
+        "inventory": []
+    },
+    {
+        "name": "Leroy",
+        "role": "Fighter",
+        "level": 1,
+        "gold": 100,
+        "hp": 100,
+        "inventory": []
+    }
+]

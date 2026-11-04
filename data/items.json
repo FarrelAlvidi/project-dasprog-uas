@@ -1,0 +1,16 @@
+{
+    "weapons": {
+        "katana_sword": {
+            "name": "Katana",
+            "damage": 15
+        },
+        "fists": {
+            "name": "Fists",
+            "damage": 5
+        }
+    },
+    "potion": {
+        "damage_potion": {"name": "Damage Potion", "mult": 2, "effect": "damage"},
+        "health_potion": {"name": "Health Potion", "mult": 2, "effect": "heal"}
+    }
+}

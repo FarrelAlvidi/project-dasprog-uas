@@ -1,61 +1,72 @@
-
 import json
 from rich.console import Console
-from rich.table import Table
+from ui import BOLD, RESET, GRAY
+from ui import cetak_menu, gagal
+from inventory import update_karakter
 
-rich = Console()
-table = Table(title="View Characters \n ",  show_edge=False )
+console = Console()
+file_path = "data/characters.json"
+
+try:
+    with open(file_path, "r", encoding="utf-8") as f:
+        characters = json.load(f)
+except (FileNotFoundError, json.JSONDecodeError):
+    characters = []
+
+roles = {
+    "Warrior": {"hp": 120, "attack": 10},
+    "Mage": {"hp": 80, "attack": 14},
+    "Rogue": {"hp": 100, "attack": 12},
+}
 
 
+def buat_karakter():
+    nama = input("Masukkan Nama Karakter: ").strip().title()
 
-class Characters:
+    if nama == "":
+        print("Nama karakter tidak boleh kosong!")
+        return
 
-    @staticmethod
-    def load_character():
-        with open("data/characters.json", "r") as f:
-            character = json.load(f)
-        return character
+    role = input("Masukkan Role Karakter (Warrior, Mage, Rogue): ").strip().title()
+
+    if role not in roles:
+        print("Role karakter tidak valid!")
+        return
+
+    s = roles[role]
+
+    data_karakter = {
+        "id": len(characters) + 1,  
+        "nama": nama,
+        "role": role,
+        "level": 1,
+        "exp": 0,
+        "gold": 100,
+        "highest_floor": 1,
+        "inventory": {"potion_kecil":1},
+        "equipped": "",
+        "max_hp": s['hp'],
+        "hp": s["hp"],
+        "attack": s["attack"]
+    }
+
+    characters.append(data_karakter)
+
+    with open(file_path, "w", encoding="utf-8") as f:
+        json.dump(characters, f, indent=4)
+
+    print("Karakter berhasil dibuat!")
+
+
+def tampilkarakter():
+    # console.print("Daftar Karakter:", style="bold blue")
+    console.print(f"[bold blue]MENU KARAKTER[/bold blue] [bright_black]{'─' * 49}[/bright_black]")
     
-    @staticmethod
-    def simpan_data(data): # Jika ada data yang ingin disimpan
-        with open("data/characters.json", "w") as f:
-            json.dump(data, f, indent=4)
+
+    for k in characters:
+        console.print(f"{k['id']}. {k['nama']} - {k['role']} - Level: {k['level']} - Highest Floor: {k['highest_floor']}")
         
 
-    @staticmethod
-    def create_character(data): # Buat data karakter
-            name = input("Input Name : ")
-            if name == "":
-                rich.print("Name cannot be empty", style="bold red")
-                return
-            create_chara = {
-                "name": name,
-                "role": "Fighter",
-                "level": 1,
-                "gold": 100,
-                "hp": 100,
-                "inventory": []
-            }
-            data.append(create_chara)
-            Characters.simpan_data(data)
-            print("Character has been created!")
 
-    @staticmethod
-    def show_character():
-        characters = Characters.load_character()
-        table.add_column("Name", justify="right", style="cyan", no_wrap=True)
-        table.add_column("Role", style="magenta")
-        table.add_column("Level", justify="right", style="green")
-        for i in characters:
-            table.add_row(i['name'], i['role'], str(i['level']))
-        rich.print(table)
-            # rich.print(
-            #     f"[red bold]>[/red bold] "
-            #     f"[magenta]{i['name']} - {i['role']} - Level "
-            #     f"{i['level']}[/magenta]",
-            #     style="blue"
-            # )
-            
-    # @staticmethod
-    # def choose_character():
-        
+# buat_karakter()
+# tampilkarakter()

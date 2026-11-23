@@ -1,60 +1,54 @@
-import random
-import time
-from rich.progress import track
+from battle import *
+from storage import FILE_MONSTER, muat_data
+from ui import (cetak_menu, cetak_header, cetak_status, minta_angka)
 
-class Monster:
-    def __init__(self, name, hp, damage, type_, floor):
-        self.name = name
-        self.hp = hp
-        self.damage = damage
-        self.type = type_
-        self.floor = floor
+MAKS_FLOOR = 5
+
+
+def validasi_floor(aktif, floor):
+    if floor > aktif["highest_floor"]:
+        print(f"{RED}Kalahkan lantai sebelumnya terlebih dahulu!")
+        jeda()
+        return False
+
+    return True
+
+
+def menu_dungeon(aktif):
+    list_monster = muat_data(FILE_MONSTER)
+    maks_floor = min(aktif["highest_floor"] + 1, MAKS_FLOOR)
+
+    cetak_header("Dungeon")
+    cetak_status(aktif)
+    # cetak_menu([("1", "Skeleton"),
+    #                     ("2", "Goblin"),
+    #                     ("3", "Shadow"),
+    #                     ("0", "Kembali ke menu utama")])
+    daftar_pilihan = [
+        (str(enemy['id']), enemy['name'])
+        for enemy in list_monster
+    ]
+    daftar_pilihan.append(("0", "Kembali ke menu utama"))
+
+    cetak_menu(daftar_pilihan)
+
+    try:
+        pilihan = int(input("> "))
+    except ValueError:
+        print("Input harus berupa angka!")
+        return
+    
+    if pilihan == 0:
+        return
+    
+    if not validasi_floor(aktif, pilihan):
+        return
+    
+    for data in list_monster:
+        if pilihan <= maks_floor:
+            if pilihan == data['id']:
+                battle(aktif, data, pilihan)
+        else:
+            print("Pilih lantai yang tersedia/yang sudah dibuka")
         
-    def munculin(self):
-        return f"{self.name}, {self.hp}, {self.damage}, {self.type}, {self.floor}"
-        
-
-
-# def floor_1(monster_target):
-#     print(f"Prepare to fight {monster_target.name}")
-#     battle(monster_target)
-
-def battle(enemy):
-    p = 100
-    turn = random.randint(1,2)
-    for i in track(range(5), description="Loading..."):
-        time.sleep(0.8)  # Simulate work being done
-    while p>0 and enemy.hp>0:
-
-        if turn == 1:
-            print("Your Turn")
-            input("Attack : ")
-            enemy.hp -= 5
-            turn = 2
-            print(f"You damage 5")
-            print(f"Enemy HP : {enemy.type}")
-            time.sleep(1)
             
-        if turn == 2:
-            print("Enemy Turn")
-            time.sleep(2)
-            p -= enemy.damage
-            turn = 1
-            print(f"Enemy damage {enemy.damage}")
-            print(f"Your HP {p}")
-            time.sleep(1)
-    if p>0:
-        print("You win!")
-    else:
-        print("You lose")
-        
-
-DemonKnight = Monster(
-    name="Demon Knight",
-    hp= 200,
-    damage=20,
-    type_="Assassin",
-    floor=5
-)
-# DemonKnight.munculin()
-battle(DemonKnight)

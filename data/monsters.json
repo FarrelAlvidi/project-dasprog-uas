@@ -1,0 +1,6 @@
+[
+    {"id": 1, "name": "Skeleton", "hp": 40,  "floor": 1, "attack": 8,  "exp": 25,  "gold": 10},
+    {"id": 2, "name": "Goblin",   "hp": 70,  "floor": 2, "attack": 12, "exp": 60,  "gold": 20},
+    {"id": 3, "name": "Shadow",   "hp": 100, "floor": 3, "attack": 15, "exp": 90,  "gold": 35},
+    {"id": 4, "name": "Brute",    "hp": 140, "floor": 4, "attack": 17, "exp": 125, "gold": 55}
+]

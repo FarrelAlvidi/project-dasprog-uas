@@ -1,28 +1,67 @@
-def print_triangle1(rows):
-    for i in range(rows, 0, -1):
-        print("*" * i)
-def triangle2(rows):
-    for i in range(1, rows):
-        for j in range(rows, 0, -1):
-            if j > i:
-                print(" ", end=' ')
+import random
+import time
+import os
+from inventory import update_karakter, menu_inventory
+from ui import jeda, cetak_header, cetak_menu, WHITE, MAGENTA, BOLD, RED, sukses, info, serang, gagal
+
+
+def levelup_karakter(aktif):
+    while aktif['exp'] >= aktif['level'] * 50:
+        aktif['exp'] = aktif['exp'] - aktif['level'] * 50
+        aktif['level'] += 1
+        aktif['attack'] += 2
+        sukses(f"LEVEL UP! {aktif['nama']} sekarang level {aktif['level']} (HP +10, ATK +2)")
+
+def battle(aktif, monster, floor):
+    # print(f"\n=== Battle ===\n{aktif['nama']} vs {monster['name']}")
+    cetak_header(f"BATTLE {aktif['nama']} vs {monster['name']}")
+    turn = random.randint(0, 1)      # 1 = pemain duluan, 0 = monster duluan
+
+    while aktif["hp"] > 0 and monster["hp"] > 0:
+        if turn == 1:
+            info("Anda menyerang, Silahkan pilih aksi!")
+            cetak_menu([
+                ("1", "Serang"),
+                ("2", "Inventory"),
+                ("3", "Lari"),
+            ], warna=WHITE)
+            action = input("> ")
+
+            if action == "1":
+                monster["hp"] -= aktif["attack"]
+                serang(f"{aktif['nama']} menyerang {monster['name']}! "
+                      f"Sisa HP monster: {max(0, monster['hp'])}")
+            # elif action == "2":
+            elif action == "3":
+                if random.random() < 0.5:
+                    print("Berhasil lari!")
+                    return "kabur"
+                print("Gagal lari!")
             else:
-                print("*", end=' ')
-        print("")
-    
-    
-tr1 = int(input("Input Rows : "))  
-tr2 = int(input("Input Rows : "))  
-print_triangle1(tr1) 
-triangle2(tr2) 
+                print("Pilihan tidak valid.")
+                continue             
+        else:
+            info("Lawan telah menyerangmu!")
+            aktif["hp"] -= monster["attack"]
+            serang(f"{monster['name']} menyerangmu! "
+                  f"Sisa HP kamu: {max(0, aktif['hp'])}")
 
+        time.sleep(1)
+        turn = 1 - turn
 
-
-
-
-
-# for baris in range(5):
-#     for kolom in range(7):
-#         print('o', end = ' ')
-#     else:
-#         print('')
+    if monster["hp"] <= 0:
+        print(f"{MAGENTA}{BOLD}Lantai {floor} telah dikalahkan, anda mendapatkan {monster['gold']} gold")
+        aktif['gold'] += monster['gold']
+        aktif['exp'] += monster['exp']
+        if floor == aktif["highest_floor"]:
+            aktif["highest_floor"] += 1
+        levelup_karakter(aktif)
+        jeda()
+        update_karakter(aktif)
+        return "menang"
+    elif aktif['hp'] <= 0:
+        duit_ilang = aktif['gold'] // 5
+        gagal(f"Kamu telah dikalahkan! Gold berkurang {duit_ilang}")
+        aktif['hp'] = aktif
+        jeda()
+        return "kalah"

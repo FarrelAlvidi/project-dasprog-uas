@@ -1,16 +1,8 @@
-{
-    "weapons": {
-        "katana_sword": {
-            "name": "Katana",
-            "damage": 15
-        },
-        "fists": {
-            "name": "Fists",
-            "damage": 5
-        }
-    },
-    "potion": {
-        "damage_potion": {"name": "Damage Potion", "mult": 2, "effect": "damage"},
-        "health_potion": {"name": "Health Potion", "mult": 2, "effect": "heal"}
-    }
-}
+[
+    {"id": "potion_kecil", "nama": "Potion Kecil", "tipe": "potion", "harga": 30, "efek": 30},
+    {"id": "potion_besar", "nama": "Potion Besar", "tipe": "potion", "harga": 70, "efek": 80},
+    {"id": "pedang_kayu", "nama": "Pedang Kayu", "tipe": "weapon", "harga": 50, "efek": 2},
+    {"id": "pedang_besi", "nama": "Pedang Besi", "tipe": "weapon", "harga": 150, "efek": 5},
+    {"id": "pedang_baja", "nama": "Pedang Baja", "tipe": "weapon", "harga": 400, "efek": 9},
+    {"id": "pedang_naga", "nama": "Pedang Naga", "tipe": "weapon", "harga": 1000, "efek": 15}
+]

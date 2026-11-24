@@ -1,11 +1,11 @@
-from characters import characters, tampilkarakter, buat_karakter
+from characters import characters, tampilkarakter, buat_karakter, hapus_karakter
 # from shop import shop
 from dungeon import *
 from battle import *
 from rich.console import Console
 from inventory import menu_inventory
 from shop import *
-from ui import (cetak_menu, cetak_header, gagal)
+from ui import (cetak_menu, cetak_header, gagal, tanya)
 
 console = Console()
 
@@ -27,10 +27,10 @@ def cari_karakter(id_karakter):
 
 def pilih_karakter():
     while True:
-        tampilkarakter()
         aktif = cari_karakter(input_angka("Pilih karakter (id): "))
         if aktif is not None:
             return aktif
+            
         print("Karakter tidak ditemukan!")
 
 
@@ -83,12 +83,29 @@ def main():
         pilihan = input_angka("➤ ")
 
         if pilihan == 1:
-            if characters:
+            if not characters:
+                gagal("Belum ada karakter, silahkan buat terlebih dahulu!")
+                continue
+
+            tampilkarakter()
+            cetak_menu([
+                ("1", "Pilih Karakter"),
+                ("2", "Hapus Karakter"),
+                ("0", "Kembali")
+            ])
+            option = minta_angka("> ", 0, 2)
+            if option == 1:
                 menu_utama(pilih_karakter())
-            else:
-                gagal("Belum ada karakter, Silahkan buat terlebih dahulu!")
+            elif option == 2:
+                hapus_karakter()
+                jeda()
+                    
+                    
+            
         elif pilihan == 2:
             buat_karakter()
+        elif pilihan == 3:
+            hapus_karakter()
         elif pilihan == 0:
             break
         else:

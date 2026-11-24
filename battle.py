@@ -10,7 +10,8 @@ def levelup_karakter(aktif):
         aktif['exp'] = aktif['exp'] - aktif['level'] * 50
         aktif['level'] += 1
         aktif['attack'] += 2
-        sukses(f"LEVEL UP! {aktif['nama']} sekarang level {aktif['level']} (HP +10, ATK +2)")
+        aktif["max_hp"] += 5
+        sukses(f"LEVEL UP! {aktif['nama']} sekarang level {aktif['level']}")
 
 def battle(aktif, monster, floor):
     # print(f"\n=== Battle ===\n{aktif['nama']} vs {monster['name']}")
@@ -22,8 +23,7 @@ def battle(aktif, monster, floor):
             info("Anda menyerang, Silahkan pilih aksi!")
             cetak_menu([
                 ("1", "Serang"),
-                ("2", "Inventory"),
-                ("3", "Lari"),
+                ("2", "Lari"),
             ], warna=WHITE)
             action = input("> ")
 
@@ -31,8 +31,7 @@ def battle(aktif, monster, floor):
                 monster["hp"] -= aktif["attack"]
                 serang(f"{aktif['nama']} menyerang {monster['name']}! "
                       f"Sisa HP monster: {max(0, monster['hp'])}")
-            # elif action == "2":
-            elif action == "3":
+            elif action == "2":
                 if random.random() < 0.5:
                     print("Berhasil lari!")
                     return "kabur"
@@ -50,7 +49,7 @@ def battle(aktif, monster, floor):
         turn = 1 - turn
 
     if monster["hp"] <= 0:
-        print(f"{MAGENTA}{BOLD}Lantai {floor} telah dikalahkan, anda mendapatkan {monster['gold']} gold")
+        print(f"{MAGENTA}{BOLD}Lantai {floor} telah dikalahkan, anda mendapatkan {monster['gold']} gold dan {monster['exp']}")
         aktif['gold'] += monster['gold']
         aktif['exp'] += monster['exp']
         if floor == aktif["highest_floor"]:
@@ -62,6 +61,8 @@ def battle(aktif, monster, floor):
     elif aktif['hp'] <= 0:
         duit_ilang = aktif['gold'] // 5
         gagal(f"Kamu telah dikalahkan! Gold berkurang {duit_ilang}")
-        aktif['hp'] = aktif
+        aktif['gold'] -= duit_ilang
+        aktif['hp'] = aktif['max_hp']
         jeda()
+        update_karakter(aktif)
         return "kalah"

@@ -35,13 +35,11 @@ def jeda():
 
 
 def tanya(pesan):
-    """Menampilkan pesan berwarna lalu membaca jawaban pemain."""
     print(f" {CYAN}{BOLD}{pesan}{RESET}", end="")
     return input().strip()
 
 
 def minta_angka(pesan, kecil, besar):
-    """Terus bertanya sampai pemain mengetik angka antara kecil dan besar."""
     while True:
         try:
             angka = int(tanya(pesan))
@@ -67,7 +65,6 @@ def info(teks):
     print(f" {YELLOW}• {teks}{RESET}")
 
 def cetak_header(teks, warna=CYAN):
-    """Banner judul di bagian atas layar."""
     lebar = 56
     judul = " ".join(teks.upper())  
     if len(judul) > lebar - 6:  
@@ -79,7 +76,6 @@ def cetak_header(teks, warna=CYAN):
 
 
 def cetak_menu(daftar_pilihan, warna=CYAN):
-    """daftar_pilihan berisi tuple (kode, teks), contoh: [("1", "Beli"), ("0", "Kembali")]"""
     print(f"\n {warna}{BOLD}MENU{RESET} {GRAY}" + "─" * 49 + RESET)
     for kode, teks in daftar_pilihan:
         print(f"  {warna}{BOLD}[{kode}]{RESET} {teks}")
@@ -106,7 +102,6 @@ def exp_bar(exp, butuh, panjang=10):
 
 
 def cetak_status(karakter, bonus_atk=0, warna=CYAN):
-    """Kartu status singkat: nama, level, HP, gold, senjata, dan ATK."""
     atk = karakter.get("attack", 0)
     # nama_senjata = karakter.get('equipped', '')
     butuh = karakter.get('level') * 50
@@ -136,7 +131,6 @@ def sel(teks, lebar, kode=RESET, rata="kiri"):
 
 
 def buat_garis(lebar_kolom, kiri, tengah, kanan):
-    """Garis tabel, contoh: ┌────┬────┐"""
     garis = kiri
     for i in range(len(lebar_kolom)):
         garis += "─" * (lebar_kolom[i] + 2)
@@ -147,12 +141,6 @@ def buat_garis(lebar_kolom, kiri, tengah, kanan):
 
 def cetak_tabel_item(judul, daftar_item, harga_jual=False, inventory=None,
                      judul_jumlah="Jumlah", id_dipakai=""):
-    """
-    Tabel item berwarna (dipakai di inventory dan shop).
-    harga_jual   : True -> kolom harga menampilkan harga jual (50%)
-    inventory    : dictionary {id: jumlah}; kalau diisi, muncul kolom jumlah
-    id_dipakai   : id senjata yang sedang dipakai, diberi tanda ★
-    """
     lebar = [2, 16, 8, 14, 10]  
     if inventory is not None:
         lebar.append(6)  # kolom jumlah

@@ -29,8 +29,8 @@ def jual_item(k, item_id, item_dict, jumlah=1):
         jumlah  # jual dengan setengah harga
     sedang_dipakai = k.get("equipped", "") == item_id
     kurangi_item(k, item_id, jumlah)
-    update_karakter(k)
     k["gold"] = k.get("gold", 0) + pendapatan
+    update_karakter(k)
     sukses(
         f"Berhasil menjual {jumlah}x {data.get('nama', item_id)} seharga {pendapatan} Gold.")
     if sedang_dipakai and k.get("equipped", "") == "":

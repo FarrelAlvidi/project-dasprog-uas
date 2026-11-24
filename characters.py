@@ -2,7 +2,7 @@ import json
 from rich.console import Console
 from ui import BOLD, RESET, GRAY
 from ui import cetak_menu, gagal
-from inventory import update_karakter
+from inventory import update_karakter, sukses, gagal
 
 console = Console()
 file_path = "data/characters.json"
@@ -20,7 +20,7 @@ roles = {
 }
 
 
-def buat_karakter():
+def buat_karakter(): 
     nama = input("Masukkan Nama Karakter: ").strip().title()
 
     if nama == "":
@@ -36,7 +36,7 @@ def buat_karakter():
     s = roles[role]
 
     data_karakter = {
-        "id": len(characters) + 1,  
+        "id": max((k["id"] for k in characters), default=0) + 1,    
         "nama": nama,
         "role": role,
         "level": 1,
@@ -63,8 +63,39 @@ def tampilkarakter():
     console.print(f"[bold blue]MENU KARAKTER[/bold blue] [bright_black]{'─' * 49}[/bright_black]")
     
 
+    for i,k in enumerate(characters):
+        console.print(f"{i+1}. {k['nama']} - {k['role']} - Level: {k['level']} - Highest Floor: {k['highest_floor']} - ID: {k['id']}")
+        
+def hapus_karakter():
+    if not characters:
+        gagal("Belum ada karakter untuk dihapus!")
+        return
+
+    try:
+        id_hapus = int(input("Masukkan id karakter yang ingin dihapus (0 = batal): "))
+    except ValueError:
+        gagal("Input harus berupa angka!")
+        return
+
+    if id_hapus == 0:
+        return
+
     for k in characters:
-        console.print(f"{k['id']}. {k['nama']} - {k['role']} - Level: {k['level']} - Highest Floor: {k['highest_floor']}")
+        if k["id"] == id_hapus:
+            konfirmasi = input(f"Ketik HAPUS untuk menghapus {k['nama']} secara permanen: ")
+            if konfirmasi != "HAPUS":
+                print("Penghapusan dibatalkan.")
+                return
+
+            characters.remove(k)
+            with open(file_path, "w", encoding="utf-8") as f:
+                json.dump(characters, f, indent=4)
+
+            sukses(f"Karakter {k['nama']} berhasil dihapus!")
+            return
+
+    gagal("Karakter dengan id tersebut tidak ditemukan!")
+    
         
 
 

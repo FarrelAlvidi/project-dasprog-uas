@@ -1,85 +1,18 @@
 [
     {
         "id": 1,
-        "nama": "SS",
+        "nama": "Syka",
         "role": "Mage",
         "level": 2,
-        "exp": 50,
-        "gold": 20,
-        "highest_floor": 2,
+        "exp": 35,
+        "gold": 5780,
+        "highest_floor": 3,
         "inventory": {
-            "potion_besar": 1
+            "pedang_naga": 1
         },
         "equipped": "",
-        "max_hp": 80,
-        "hp": 80,
+        "max_hp": 85,
+        "hp": 85,
         "attack": 16
-    },
-    {
-        "id": 2,
-        "nama": "Arya",
-        "role": "Mage",
-        "level": 2,
-        "exp": 75,
-        "gold": 120,
-        "highest_floor": 2,
-        "inventory": {
-            "potion_kecil": 1,
-            "pedang_kayu": 1
-        },
-        "equipped": "pedang_kayu",
-        "max_hp": 80,
-        "hp": 24,
-        "attack": 18
-    },
-    {
-        "id": 3,
-        "nama": "Aski",
-        "role": "Mage",
-        "level": 2,
-        "exp": 35,
-        "gold": 80,
-        "highest_floor": 3,
-        "inventory": {
-            "potion_kecil": 1,
-            "pedang_kayu": 1
-        },
-        "equipped": "pedang_kayu",
-        "max_hp": 80,
-        "hp": 8,
-        "attack": 18
-    },
-    {
-        "id": 4,
-        "nama": "Piw",
-        "role": "Rogue",
-        "level": 1,
-        "exp": 25,
-        "gold": 40,
-        "highest_floor": 2,
-        "inventory": {
-            "potion_besar": 1
-        },
-        "equipped": "",
-        "max_hp": 100,
-        "hp": 98,
-        "attack": 12
-    },
-    {
-        "id": 5,
-        "nama": "Ihsan",
-        "role": "Warrior",
-        "level": 2,
-        "exp": 35,
-        "gold": 80,
-        "highest_floor": 3,
-        "inventory": {
-            "potion_kecil": 1,
-            "pedang_kayu": 1
-        },
-        "equipped": "",
-        "max_hp": 120,
-        "hp": 16,
-        "attack": 12
     }
 ]

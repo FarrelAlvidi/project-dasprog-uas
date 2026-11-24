@@ -34,7 +34,6 @@ def muat_items():
 
 
 def senjata_aktif(karakter, item_dict):
-    """Data senjata yang sedang dipakai (dictionary kosong kalau tidak ada)."""
     return item_dict.get(karakter.get("equipped", ""), {})
 
 
@@ -63,11 +62,11 @@ def tambah_item(karakter, id_item, jumlah=1):
 def kurangi_item(karakter, id_item, jumlah=1):
     inv = karakter.setdefault("inventory", {})
     inv[id_item] -= jumlah
-    if inv[id_item] <= 0:
-        del inv[id_item]  
+    if inv[id_item] <= 0: # Cek kalau item nya = 0, del item tersebut
+        del inv[id_item] 
         if karakter.get("equipped", "") == id_item:
+            karakter["attack"] -= muat_items()[id_item]["efek"]
             karakter["equipped"] = ""
-
 
 def pakai_potion(karakter, item):
     hp = karakter.get("hp", 100)
@@ -83,10 +82,11 @@ def pakai_potion(karakter, item):
 
 
 def pasang_senjata(karakter, item):
-    """Hanya satu senjata yang bisa dipakai pada satu waktu."""
     if karakter.get("equipped", "") == item["id"]:
         gagal(f"{item['nama']} sudah kamu pakai.")
         return False
+    if karakter.get("equipped", ""):
+        lepas_senjata(karakter) # Jika udah ada senjata yang dipakai, harus dilepas dlu
     karakter["equipped"] = item["id"]
     karakter["attack"] += item['efek']
     update_karakter(karakter)
